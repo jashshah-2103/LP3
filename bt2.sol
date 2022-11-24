@@ -1,22 +1,29 @@
 // SPDX-License-Identifier: GPL-3.0
 
-pragma solidity >=0.7.0 <0.9.0;
+pragma solidity 0.8.11;
 
-contract Bank {
-    mapping(address => uint256) public balances;
+contract BankSystem{
 
-    function deposit() public payable {
-        balances[msg.sender] += msg.value;
+    uint balance;
+
+    function deposit(uint amount) public returns(uint)
+    {
+        balance+=amount;
+        return 1;
     }
 
-    function withdraw(uint256 _amount) public {
-        require(balances[msg.sender] >= _amount, "Not enough ether");
-        balances[msg.sender] -= _amount;
-        (bool sent, ) = msg.sender.call{value: _amount}("Sent");
-        require(sent, "failed to send ETH");
+    function withdraw(uint amount) public returns(uint)
+    {
+        if(amount<=balance)
+        {
+            balance-=amount;
+            return 1;
+        }
+        else return 0;
     }
 
-    function getBal() public view returns (uint256) {
-        return address(this).balance;
+    function showBalance() view public returns (uint){
+        return balance;
     }
+
 }
